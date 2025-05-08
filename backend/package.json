@@ -1,12 +1,17 @@
 {
-  "name": "backend",
+  "name": "armed-store-backend",
   "version": "1.0.0",
-  "description": "Backend API for armed e-commerce platform",
+  "description": "Backend pour la plateforme e-commerce Armed Store",
   "main": "src/index.js",
   "scripts": {
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "test:auth": "node scripts/test-auth.js",
+    "test:products": "node scripts/test-products.js",
+    "test:licenses": "node scripts/test-licenses.js",
+    "test:orders": "node scripts/test-orders.js",
+    "init:admin": "node scripts/init-admin.js"
   },
   "keywords": [
     "e-commerce",
@@ -27,6 +32,7 @@
     "stripe": "^14.20.0"
   },
   "devDependencies": {
+    "axios": "^1.9.0",
     "nodemon": "^3.1.10"
   }
 }

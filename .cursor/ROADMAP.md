@@ -13,27 +13,28 @@ Roadmap ultra détaillée pour le développement complet de la plateforme e-comm
 * [x] Initialiser README.md dans chaque repo avec objectifs
 * [x] Ajouter `.gitignore` (.env, node_modules, dist, etc.)
 * [x] Configurer Railway pour backend + PostgreSQL
-* [ ] Configurer Vercel pour héberger le frontend
+* [x] Configurer Vercel pour héberger le frontend
 * [x] Créer base PostgreSQL sur Railway
-* [x] Générer clefs JWT, clés Stripe et ajouter au `.env`
+* [x] Générer clé JWT
+* [ ] Configurer Stripe (clés et webhook)
 
 ### 🏗 Frontend (Vue.js)
 
 * [x] Créer projet Vue 3 avec Vite (`npm create vite@latest`)
 * [x] Ajouter et configurer Pinia (`npm i pinia`)
 * [x] Ajouter et configurer Vue Router (`npm i vue-router`)
-* [ ] Créer structure de dossiers `components/`, `pages/`, `stores/`, `composables/`, `assets/`
-* [ ] Ajouter typographie Geist via Google Fonts (ou auto-hébergée)
-* [ ] Créer layout global avec Header / Footer / Slot principal
-* [ ] Créer fichier de configuration design system (couleurs, typo)
-* [ ] Définir variables CSS ou fichier `theme.ts` si utile
-* [ ] Créer composants :
+* [x] Créer structure de dossiers `components/`, `pages/`, `stores/`, `composables/`, `assets/`
+* [x] Ajouter typographie Geist via Google Fonts (ou auto-hébergée)
+* [x] Créer layout global avec Header / Footer / Slot principal
+* [x] Créer fichier de configuration design system (couleurs, typo)
+* [x] Définir variables CSS ou fichier `theme.ts` si utile
+* [x] Créer composants :
 
-  * [ ] `BaseButton.vue`
-  * [ ] `BaseInput.vue`
-  * [ ] `ProductCard.vue`
-  * [ ] `AudioPlayer.vue`
-  * [ ] `SectionContainer.vue`
+  * [x] `BaseButton.vue`
+  * [x] `BaseInput.vue`
+  * [x] `ProductCard.vue`
+  * [x] `AudioPlayer.vue`
+  * [x] `SectionContainer.vue`
 
 ### 🧪 Backend (Express.js)
 
@@ -47,59 +48,135 @@ Roadmap ultra détaillée pour le développement complet de la plateforme e-comm
   * [x] `/middlewares`
   * [x] `/utils`
 * [x] Configurer parsing JSON et middleware CORS
-* [ ] Créer fonction de connexion PostgreSQL
+* [x] Créer fonction de connexion PostgreSQL
 * [x] Créer middleware global de gestion d'erreurs
-* [ ] Créer routes d'authentification admin (login, register, JWT)
+* [x] Créer routes d'authentification admin (login, register, JWT)
 * [x] Vérifier connexion et réponse JSON sur route `/ping`
+
+### 🧪 Tests des endpoints
+
+* [x] Tests de base
+  * [x] `GET /ping` - Vérifier réponse "pong"
+  * [x] `GET /test-db` - Vérifier connexion DB et timestamp
+
+* [x] Tests d'authentification
+  * [x] `POST /api/auth/register` - Créer un admin
+    * [x] Test avec email valide
+    * [x] Test avec email déjà utilisé
+    * [x] Test avec mot de passe invalide
+  * [x] `POST /api/auth/login` - Connexion admin
+    * [x] Test avec identifiants valides
+    * [x] Test avec email invalide
+    * [x] Test avec mot de passe invalide
+  * [x] `GET /api/auth/me` - Vérifier token
+    * [x] Test avec token valide
+    * [x] Test sans token
+    * [x] Test avec token invalide
+
+* [x] Tests des produits
+  * [x] `GET /api/products` - Liste des produits
+  * [x] `GET /api/products/:id` - Détails d'un produit
+  * [x] `POST /api/products` - Créer un produit (admin)
+  * [x] `PUT /api/products/:id` - Modifier un produit (admin)
+  * [x] `DELETE /api/products/:id` - Supprimer un produit (admin)
+
+* [x] Tests des licences
+  * [x] `GET /api/licenses` - Liste des licences
+  * [x] `GET /api/licenses/:id` - Détails d'une licence
+  * [x] `POST /api/licenses` - Créer une licence (admin)
+  * [x] `PUT /api/licenses/:id` - Modifier une licence (admin)
+  * [x] `DELETE /api/licenses/:id` - Supprimer une licence (admin)
+
+* [x] Tests des commandes
+  * [x] `GET /api/orders` - Liste des commandes (admin)
+  * [x] `GET /api/orders/:id` - Détails d'une commande
+  * [x] `POST /api/orders` - Créer une commande
+  * [x] `PUT /api/orders/:id` - Mettre à jour le statut (admin)
+  * [x] `GET /api/orders/:id/download` - Télécharger les fichiers
 
 ---
 
 ## Phase 2 — Frontend public (UI & pages utilisateur)
 
-* [ ] `/` Accueil
+* [x] `/` Accueil
 
-  * [ ] Hero avec branding `armed`, DA visuelle et texte
-  * [ ] Grille responsive de 3 produits en avant
-  * [ ] Call-to-action vers `/store`
-  * [ ] Bouton / lien vers page `/placements`
+  * [x] Hero avec branding `armed`, DA visuelle et texte
+  * [x] Grille responsive de 3 produits en avant
+  * [x] Call-to-action vers `/store`
+  * [x] Bouton / lien vers page `/placements`
 
-* [ ] `/store` Catalogue
+* [x] `/store` Catalogue
 
-  * [ ] Récupération des produits via API REST
-  * [ ] Filtres par type de produit, tags, etc.
-  * [ ] Grille responsive de cards produits
-  * [ ] Affichage "En rupture" si stock épuisé
+  * [x] Récupération des produits via API REST
+  * [x] Filtres par type de produit, tags, etc.
+  * [x] Grille responsive de cards produits
+  * [x] Affichage "En rupture" si stock épuisé
 
-* [ ] `/product/:id`
+* [x] `/product/:id`
 
-  * [ ] Récupération des infos produit
-  * [ ] Affichage de l'image, description, type, prix
-  * [ ] Choix de licence (si beat) avec radio ou select
-  * [ ] Intégration player audio custom
-  * [ ] Bouton "Ajouter au panier"
+  * [x] Récupération des infos produit
+  * [x] Affichage de l'image, description, type, prix
+  * [x] Choix de licence (si beat) avec radio ou select
+  * [x] Intégration player audio custom
+  * [x] Bouton "Ajouter au panier"
 
-* [ ] `/cart`
+* [x] `/cart`
 
-  * [ ] Affichage produits + type + licence
-  * [ ] Calcul total dynamique
-  * [ ] Bouton "Supprimer" produit du panier
-  * [ ] CTA vers `/checkout`
+  * [x] Affichage produits + type + licence
+  * [x] Calcul total dynamique
+  * [x] Bouton "Supprimer" produit du panier
+  * [x] CTA vers `/checkout`
 
-* [ ] `/checkout`
+* [x] `/checkout`
 
-  * [ ] Formulaire email requis
-  * [ ] Stripe Checkout intégré (avec backend session)
-  * [ ] Redirection vers `/success` après paiement
+  * [x] Formulaire email requis
+  * [x] Stripe Checkout intégré (avec backend session)
+  * [x] Redirection vers `/success` après paiement
 
-* [ ] `/success`
+* [x] `/success`
 
-  * [ ] Message personnalisé de remerciement
-  * [ ] Lien(s) de téléchargement audio et contrat PDF
+  * [x] Message personnalisé de remerciement
+  * [x] Lien(s) de téléchargement audio et contrat PDF
 
 * [ ] `/placements`
 
-  * [ ] Composants placements : titre, lien, embed Spotify/Youtube/Apple Music
-  * [ ] Layout artistique, propre à ta DA
+  * [x] Composants placements : titre, lien, embed Spotify/Youtube/Apple Music
+  * [x] Layout artistique, propre à ta DA
+
+### 📝 Patch Notes - Frontend v0.2.0
+
+#### Pages principales
+- ✅ Implémentation complète de la page d'accueil avec hero et produits en avant
+- ✅ Création du catalogue avec système de filtrage
+- ✅ Page de détail produit avec player audio et sélection de licence
+- ✅ Panier avec calcul dynamique des totaux
+- ✅ Intégration du paiement Stripe
+- ✅ Page de succès avec téléchargements
+
+#### Stores Pinia
+- ✅ Store de gestion des produits avec requêtes API
+- ✅ Store de gestion du panier avec calcul des totaux
+- ✅ Store de gestion des commandes et paiements
+
+#### Prochaines étapes
+- [ ] Implémentation de la page des placements
+- [ ] Finalisation des composants de base (BaseButton, BaseInput, AudioPlayer)
+- [ ] Tests unitaires et d'intégration
+- [ ] Optimisation des performances
+
+### 📝 Patch Notes - Backend v0.1.0
+
+#### Configuration initiale
+- ✅ Mise en place de l'architecture Express.js
+- ✅ Configuration de la base de données PostgreSQL sur Railway
+- ✅ Implémentation du système d'authentification JWT
+- ✅ Création des routes d'authentification (register, login, me)
+
+#### Prochaines étapes
+- [ ] Implémentation des routes de gestion des produits
+- [ ] Configuration de Stripe pour les paiements
+- [ ] Mise en place du système de génération de contrats PDF
+- [ ] Tests des endpoints d'authentification
 
 ---
 
@@ -198,3 +275,30 @@ Roadmap ultra détaillée pour le développement complet de la plateforme e-comm
 * [ ] Test final en condition réelle
 * [ ] Créer visuel/story/post lancement
 * [ ] Annoncer sortie sur Instagram, site, etc. 🎉
+
+### 📝 Patch Notes - Frontend v0.1.0
+
+#### Composants de base
+- ✅ Création du système de design avec variables CSS
+- ✅ Implémentation de `BaseButton` avec 4 variantes (primary, secondary, outline, text)
+- ✅ Implémentation de `BaseInput` avec support des labels et messages d'erreur
+- ✅ Implémentation de `ProductCard` pour l'affichage des produits
+- ✅ Implémentation de `AudioPlayer` avec contrôles de lecture et barre de progression
+- ✅ Implémentation de `SectionContainer` pour la mise en page des sections
+
+#### Layout
+- ✅ Création du layout global avec Header et Footer
+- ✅ Intégration de la navigation principale
+- ✅ Mise en place du système de routing
+
+#### Design System
+- ✅ Définition de la palette de couleurs
+- ✅ Configuration de la typographie Geist
+- ✅ Mise en place des espacements et des rayons de bordure
+- ✅ Ajout des transitions et animations de base
+
+#### Prochaines étapes
+- [ ] Création des pages principales (Home, Store, Product)
+- [ ] Implémentation du store Pinia pour la gestion du panier
+- [ ] Intégration de l'API backend
+- [ ] Mise en place du système d'authentification
