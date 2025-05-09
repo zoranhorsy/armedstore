@@ -182,30 +182,140 @@ Roadmap ultra détaillée pour le développement complet de la plateforme e-comm
 
 ## Phase 3 — Backend e-commerce (routes + logique)
 
-* [ ] Créer modèles SQL ou Prisma pour :
+### 🗄️ Base de données
 
-  * [ ] `users` (id, email, password_hash, role)
-  * [ ] `products` (id, title, slug, type, price, stock, is_exclusive...)
-  * [ ] `licenses` (id, product_id, name, price, contract_path, max_sales)
-  * [ ] `orders` (id, user_id, total, status, created_at)
-  * [ ] `order_items` (id, order_id, product_id, license_id...)
+* [ ] Créer et configurer les modèles SQL :
+  * [ ] `users`
+    * [ ] `id` (UUID, PK)
+    * [ ] `email` (VARCHAR, UNIQUE)
+    * [ ] `password_hash` (VARCHAR)
+    * [ ] `role` (ENUM: 'admin', 'user')
+    * [ ] `created_at` (TIMESTAMP)
+    * [ ] `updated_at` (TIMESTAMP)
 
-* [ ] Créer routes REST :
+  * [ ] `products`
+    * [ ] `id` (UUID, PK)
+    * [ ] `title` (VARCHAR)
+    * [ ] `slug` (VARCHAR, UNIQUE)
+    * [ ] `type` (ENUM: 'beat', 'sample', 'loop')
+    * [ ] `description` (TEXT)
+    * [ ] `price` (DECIMAL)
+    * [ ] `stock` (INTEGER)
+    * [ ] `is_exclusive` (BOOLEAN)
+    * [ ] `audio_url` (VARCHAR)
+    * [ ] `image_url` (VARCHAR)
+    * [ ] `tags` (ARRAY)
+    * [ ] `created_at` (TIMESTAMP)
+    * [ ] `updated_at` (TIMESTAMP)
 
-  * [ ] `GET /api/products`
-  * [ ] `GET /api/products/:id`
-  * [ ] `POST /api/products` (admin)
-  * [ ] `PUT /api/products/:id`
-  * [ ] `DELETE /api/products/:id`
-  * [ ] `POST /api/licenses`
-  * [ ] `POST /api/orders`
-  * [ ] `POST /api/auth/login`
+  * [ ] `licenses`
+    * [ ] `id` (UUID, PK)
+    * [ ] `product_id` (UUID, FK)
+    * [ ] `name` (VARCHAR)
+    * [ ] `price` (DECIMAL)
+    * [ ] `contract_path` (VARCHAR)
+    * [ ] `max_sales` (INTEGER)
+    * [ ] `created_at` (TIMESTAMP)
+    * [ ] `updated_at` (TIMESTAMP)
 
-* [ ] Stripe webhook `POST /api/stripe/webhook`
+  * [ ] `orders`
+    * [ ] `id` (UUID, PK)
+    * [ ] `user_id` (UUID, FK)
+    * [ ] `total` (DECIMAL)
+    * [ ] `status` (ENUM: 'pending', 'paid', 'failed')
+    * [ ] `stripe_session_id` (VARCHAR)
+    * [ ] `created_at` (TIMESTAMP)
+    * [ ] `updated_at` (TIMESTAMP)
 
-* [ ] Génération PDF via `pdf-lib` + stockage temporaire/local
+  * [ ] `order_items`
+    * [ ] `id` (UUID, PK)
+    * [ ] `order_id` (UUID, FK)
+    * [ ] `product_id` (UUID, FK)
+    * [ ] `license_id` (UUID, FK, NULLABLE)
+    * [ ] `quantity` (INTEGER)
+    * [ ] `price` (DECIMAL)
+    * [ ] `created_at` (TIMESTAMP)
 
-* [ ] Récupération liens PDF + audio via `/success`
+### 🔄 Routes API
+
+* [ ] Routes Produits
+  * [ ] `GET /api/products` - Liste des produits
+    * [ ] Pagination
+    * [ ] Filtres (type, tags, prix)
+    * [ ] Tri (date, prix, popularité)
+  * [ ] `GET /api/products/:id` - Détails d'un produit
+  * [ ] `POST /api/products` - Créer un produit (admin)
+    * [ ] Validation des données
+    * [ ] Upload audio/image
+  * [ ] `PUT /api/products/:id` - Modifier un produit (admin)
+  * [ ] `DELETE /api/products/:id` - Supprimer un produit (admin)
+
+* [ ] Routes Licences
+  * [ ] `GET /api/licenses` - Liste des licences
+  * [ ] `GET /api/licenses/:id` - Détails d'une licence
+  * [ ] `POST /api/licenses` - Créer une licence (admin)
+  * [ ] `PUT /api/licenses/:id` - Modifier une licence (admin)
+  * [ ] `DELETE /api/licenses/:id` - Supprimer une licence (admin)
+
+* [ ] Routes Commandes
+  * [ ] `GET /api/orders` - Liste des commandes (admin)
+  * [ ] `GET /api/orders/:id` - Détails d'une commande
+  * [ ] `POST /api/orders` - Créer une commande
+    * [ ] Validation du panier
+    * [ ] Création session Stripe
+  * [ ] `PUT /api/orders/:id` - Mettre à jour le statut (admin)
+  * [ ] `GET /api/orders/:id/download` - Télécharger les fichiers
+
+### 💳 Intégration Stripe
+
+* [ ] Configuration
+  * [ ] Installer `stripe` package
+  * [ ] Configurer clés API dans `.env`
+  * [ ] Créer middleware de vérification webhook
+
+* [ ] Webhook Stripe
+  * [ ] `POST /api/stripe/webhook`
+    * [ ] Vérification signature
+    * [ ] Gestion événements :
+      * [ ] `checkout.session.completed`
+      * [ ] `payment_intent.succeeded`
+      * [ ] `payment_intent.failed`
+
+### 📄 Génération PDF
+
+* [ ] Configuration
+  * [ ] Installer `pdf-lib`
+  * [ ] Créer templates de contrats
+  * [ ] Configurer stockage temporaire
+
+* [ ] Génération
+  * [ ] Créer service de génération PDF
+  * [ ] Intégrer variables dynamiques
+  * [ ] Gérer stockage et accès
+
+### 🔒 Sécurité
+
+* [ ] Middleware d'authentification
+  * [ ] Vérification JWT
+  * [ ] Gestion des rôles
+  * [ ] Rate limiting
+
+* [ ] Validation des données
+  * [ ] Sanitization des inputs
+  * [ ] Validation des types
+  * [ ] Gestion des erreurs
+
+### 📝 Tests
+
+* [ ] Tests unitaires
+  * [ ] Routes API
+  * [ ] Services
+  * [ ] Middleware
+
+* [ ] Tests d'intégration
+  * [ ] Flux complet d'achat
+  * [ ] Webhook Stripe
+  * [ ] Génération PDF
 
 ---
 
