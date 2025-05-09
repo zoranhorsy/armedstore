@@ -94,6 +94,11 @@ Roadmap ultra détaillée pour le développement complet de la plateforme e-comm
   * [x] `PUT /api/orders/:id` - Mettre à jour le statut (admin)
   * [x] `GET /api/orders/:id/download` - Télécharger les fichiers
 
+* [x] Tests TypeScript
+  * [x] Validation des types dans les composants Vue
+  * [x] Correction des erreurs de typage dans les stores Pinia
+  * [x] Mise à jour des interfaces et types
+
 ---
 
 ## Phase 2 — Frontend public (UI & pages utilisateur)
@@ -155,14 +160,16 @@ Roadmap ultra détaillée pour le développement complet de la plateforme e-comm
 
 #### Stores Pinia
 - ✅ Store de gestion des produits avec requêtes API
-- ✅ Store de gestion du panier avec calcul des totaux
+- ✅ Store de gestion du panier avec calcul des totaux et gestion des types TypeScript
 - ✅ Store de gestion des commandes et paiements
+- ✅ Correction des erreurs TypeScript dans les composants
 
 #### Prochaines étapes
 - [ ] Implémentation de la page des placements
 - [ ] Finalisation des composants de base (BaseButton, BaseInput, AudioPlayer)
 - [ ] Tests unitaires et d'intégration
 - [ ] Optimisation des performances
+- [ ] Documentation des types TypeScript
 
 ### 📝 Patch Notes - Backend v0.1.0
 
@@ -266,6 +273,45 @@ Roadmap ultra détaillée pour le développement complet de la plateforme e-comm
   * [ ] `PUT /api/orders/:id` - Mettre à jour le statut (admin)
   * [ ] `GET /api/orders/:id/download` - Télécharger les fichiers
 
+### 📦 Gestion des Fichiers
+* [ ] Configuration du stockage
+  * [ ] Setup AWS S3 ou équivalent
+  * [ ] Configuration des buckets
+  * [ ] Gestion des permissions
+* [ ] Upload des fichiers
+  * [ ] Upload audio (MP3, WAV)
+  * [ ] Upload images (JPG, PNG)
+  * [ ] Compression automatique
+* [ ] Sécurité
+  * [ ] Validation des types de fichiers
+  * [ ] Scan antivirus
+  * [ ] Protection contre les abus
+
+### 📧 Système d'Emails
+* [ ] Configuration
+  * [ ] Setup SendGrid ou équivalent
+  * [ ] Templates d'emails
+  * [ ] Variables dynamiques
+* [ ] Types d'emails
+  * [ ] Confirmation de commande
+  * [ ] Lien de téléchargement
+  * [ ] Récupération de mot de passe
+  * [ ] Notifications admin
+
+### 🔍 SEO & Analytics
+* [ ] Configuration
+  * [ ] Setup Google Analytics
+  * [ ] Meta tags dynamiques
+  * [ ] Sitemap.xml
+* [ ] Optimisation
+  * [ ] Balises meta par page
+  * [ ] Open Graph tags
+  * [ ] Schema.org markup
+* [ ] Tracking
+  * [ ] Events e-commerce
+  * [ ] Funnel de conversion
+  * [ ] Rapports personnalisés
+
 ### 💳 Intégration Stripe
 
 * [ ] Configuration
@@ -350,32 +396,72 @@ Roadmap ultra détaillée pour le développement complet de la plateforme e-comm
 
 ## Phase 5 — DA, Player, Responsive, QA
 
-* [ ] Player audio personnalisé (`AudioPlayer.vue`)
+### 📝 Optimisation TypeScript
+* [ ] Documentation des Types
+  * [ ] Création d'un fichier `types/index.ts` centralisé
+  * [ ] Documentation JSDoc pour chaque interface
+  * [ ] Exemples d'utilisation pour chaque type
+* [ ] Refactoring des Stores
+  * [ ] Optimisation du store `cart.ts`
+  * [ ] Typage strict des actions et mutations
+  * [ ] Gestion des états de chargement
+* [ ] Composants Vue
+  * [ ] Props typées avec validation
+  * [ ] Emits typés
+  * [ ] Composables typés
+* [ ] API Integration
+  * [ ] Types pour les réponses API
+  * [ ] Validation des données reçues
+  * [ ] Gestion des erreurs typées
 
-  * [ ] Play / Pause / Barre lecture stylée
-  * [ ] Intégration dans la fiche produit
+### 🎵 Player audio personnalisé (`AudioPlayer.vue`)
 
-* [ ] DA / UI
+* [ ] Play / Pause / Barre lecture stylée
+* [ ] Intégration dans la fiche produit
 
-  * [ ] Palette de fond blanc `#F3F3F3` vers gris clair
-  * [ ] Texte noir bleuté très foncé
-  * [ ] Accentuation bleu marine ou noir
-  * [ ] Typo Geist sur tout le site
+### 🎨 DA / UI
 
-* [ ] Responsive
+* [ ] Palette de fond blanc `#F3F3F3` vers gris clair
+* [ ] Texte noir bleuté très foncé
+* [ ] Accentuation bleu marine ou noir
+* [ ] Typo Geist sur tout le site
 
-  * [ ] Grilles adaptables
-  * [ ] Navigation mobile propre
-  * [ ] Footer sticky ou minimal
+### 📱 Responsive
 
-* [ ] QA & tests manuels
+* [ ] Grilles adaptables
+* [ ] Navigation mobile propre
+* [ ] Footer sticky ou minimal
 
-  * [ ] Test achat avec Stripe test mode
-  * [ ] Vérif génération contrat + lien audio
-  * [ ] Tests navigation mobile / tablette / desktop
-  * [ ] Contrôle console / logs / erreurs 404
+### 🎯 QA & tests manuels
 
----
+* [ ] Test achat avec Stripe test mode
+* [ ] Vérif génération contrat + lien audio
+* [ ] Tests navigation mobile / tablette / desktop
+* [ ] Contrôle console / logs / erreurs 404
+
+### 🔒 Sécurité
+* [ ] Protection contre les attaques
+  * [ ] Rate limiting
+  * [ ] CORS configuration
+  * [ ] XSS protection
+* [ ] Validation des données
+  * [ ] Sanitization des inputs
+  * [ ] Validation des fichiers
+  * [ ] Protection CSRF
+* [ ] Audit de sécurité
+  * [ ] Scan de vulnérabilités
+  * [ ] Test de pénétration
+  * [ ] Rapport de sécurité
+
+### 📱 PWA & Offline
+* [ ] Configuration
+  * [ ] Manifest.json
+  * [ ] Service Workers
+  * [ ] Cache stratégies
+* [ ] Fonctionnalités
+  * [ ] Installation sur mobile
+  * [ ] Mode hors-ligne
+  * [ ] Notifications push
 
 ## Phase 6 — Lancement
 

@@ -5,6 +5,7 @@ import Product from '@/pages/Product.vue'
 import Cart from '@/pages/Cart.vue'
 import Checkout from '@/pages/Checkout.vue'
 import Success from '@/pages/Success.vue'
+import Placements from '@/pages/Placements.vue'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -38,6 +39,11 @@ const router = createRouter({
       path: '/success',
       name: 'success',
       component: Success
+    },
+    {
+      path: '/placements',
+      name: 'placements',
+      component: Placements
     }
   ]
 })
