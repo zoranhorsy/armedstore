@@ -1,25 +1,25 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
-
-interface CartItem {
-  id: string
-  product: any
-  license?: any
-}
+import type { CartItem } from '../types'
 
 export const useCartStore = defineStore('cart', () => {
   const items = ref<CartItem[]>([])
 
-  const addToCart = (item: CartItem) => {
-    items.value.push({
-      ...item,
-      id: `${item.product.id}-${item.license?.id || 'no-license'}`
-    })
+  const addItem = (item: CartItem) => {
+    const existingItem = items.value.find(
+      i => i.product.id === item.product.id && i.license?.id === item.license?.id
+    )
+
+    if (existingItem) {
+      existingItem.quantity++
+    } else {
+      items.value.push(item)
+    }
   }
 
-  const removeFromCart = (item: CartItem) => {
-    const index = items.value.findIndex(i => i.id === item.id)
-    if (index !== -1) {
+  const removeFromCart = (itemId: string) => {
+    const index = items.value.findIndex(item => item.id === itemId)
+    if (index > -1) {
       items.value.splice(index, 1)
     }
   }
@@ -30,7 +30,8 @@ export const useCartStore = defineStore('cart', () => {
 
   const total = computed(() => {
     return items.value.reduce((sum, item) => {
-      return sum + (item.license?.price || item.product.price)
+      const price = item.license?.price || item.product.price
+      return sum + price * item.quantity
     }, 0)
   })
 
@@ -42,7 +43,7 @@ export const useCartStore = defineStore('cart', () => {
     items,
     total,
     totalWithTax,
-    addToCart,
+    addItem,
     removeFromCart,
     clearCart
   }

@@ -1,14 +1,15 @@
 <template>
   <div class="base-input" :class="{ 'base-input--error': error }">
-    <label v-if="label" :for="id" class="base-input__label">{{ label }}</label>
+    <label v-if="label" :for="inputId" class="base-input__label">{{ label }}</label>
     <input
-      :id="id"
+      :id="inputId"
       :type="type"
-      :value="modelValue"
+      :value="value"
       :placeholder="placeholder"
       :disabled="disabled"
-      class="base-input__field"
-      @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
+      :required="required"
+      @input="$emit('update:value', ($event.target as HTMLInputElement).value)"
+      class="base-input__input"
     />
     <span v-if="error" class="base-input__error">{{ error }}</span>
   </div>
@@ -18,17 +19,18 @@
 import { computed } from 'vue'
 
 const props = defineProps<{
-  modelValue: string
+  id?: string
   label?: string
   type?: string
+  value?: string
   placeholder?: string
-  error?: string
   disabled?: boolean
-  id?: string
+  required?: boolean
+  error?: string
 }>()
 
 defineEmits<{
-  (e: 'update:modelValue', value: string): void
+  (e: 'update:value', value: string): void
 }>()
 
 const inputId = computed(() => props.id || Math.random().toString(36).substring(2, 9))
@@ -47,7 +49,7 @@ const inputId = computed(() => props.id || Math.random().toString(36).substring(
   font-weight: 500;
 }
 
-.base-input__field {
+.base-input__input {
   padding: var(--spacing-sm) var(--spacing-md);
   border: 1px solid rgba(0, 0, 0, 0.1);
   border-radius: var(--radius-md);
@@ -57,22 +59,22 @@ const inputId = computed(() => props.id || Math.random().toString(36).substring(
   background-color: white;
 }
 
-.base-input__field:focus {
+.base-input__input:focus {
   outline: none;
   border-color: var(--color-primary);
   box-shadow: 0 0 0 2px rgba(15, 52, 96, 0.1);
 }
 
-.base-input__field::placeholder {
+.base-input__input::placeholder {
   color: rgba(0, 0, 0, 0.4);
 }
 
-.base-input__field:disabled {
+.base-input__input:disabled {
   background-color: var(--color-background);
   cursor: not-allowed;
 }
 
-.base-input--error .base-input__field {
+.base-input--error .base-input__input {
   border-color: var(--color-accent);
 }
 

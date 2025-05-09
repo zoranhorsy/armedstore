@@ -2,12 +2,11 @@
   <button
     :class="[
       'base-button',
-      'base-button--' + variant,
+      `base-button--${type}`,
       { 'base-button--full': full }
     ]"
-    :type="type"
     :disabled="disabled"
-    @click="$emit('click', $event)"
+    @click="$emit('click')"
   >
     <slot></slot>
   </button>
@@ -15,28 +14,22 @@
 
 <script setup lang="ts">
 defineProps<{
-  variant?: 'primary' | 'secondary' | 'outline' | 'text'
-  type?: 'button' | 'submit' | 'reset'
+  type?: 'primary' | 'secondary' | 'outline' | 'submit'
   full?: boolean
   disabled?: boolean
 }>()
 
 defineEmits<{
-  (e: 'click', event: MouseEvent): void
+  (e: 'click'): void
 }>()
 </script>
 
 <style scoped>
 .base-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: var(--spacing-sm) var(--spacing-lg);
-  border-radius: var(--radius-md);
-  font-family: var(--font-family-base);
-  font-size: 1rem;
-  font-weight: 500;
-  transition: all var(--transition-fast);
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
   cursor: pointer;
   border: none;
   outline: none;
@@ -47,8 +40,8 @@ defineEmits<{
   color: white;
 }
 
-.base-button--primary:hover:not(:disabled) {
-  background-color: var(--color-secondary);
+.base-button--primary:hover {
+  background-color: var(--color-primary-dark);
 }
 
 .base-button--secondary {
@@ -56,29 +49,19 @@ defineEmits<{
   color: white;
 }
 
-.base-button--secondary:hover:not(:disabled) {
-  background-color: var(--color-primary);
+.base-button--secondary:hover {
+  background-color: var(--color-secondary-dark);
 }
 
 .base-button--outline {
   background-color: transparent;
-  border: 1px solid var(--color-primary);
+  border: 2px solid var(--color-primary);
   color: var(--color-primary);
 }
 
-.base-button--outline:hover:not(:disabled) {
+.base-button--outline:hover {
   background-color: var(--color-primary);
   color: white;
-}
-
-.base-button--text {
-  background-color: transparent;
-  color: var(--color-primary);
-  padding: var(--spacing-xs) var(--spacing-sm);
-}
-
-.base-button--text:hover:not(:disabled) {
-  color: var(--color-secondary);
 }
 
 .base-button--full {
@@ -86,7 +69,7 @@ defineEmits<{
 }
 
 .base-button:disabled {
-  opacity: 0.6;
+  opacity: 0.5;
   cursor: not-allowed;
 }
 </style> 

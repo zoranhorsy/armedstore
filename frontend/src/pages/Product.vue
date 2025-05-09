@@ -29,7 +29,7 @@
             >
               <h4>{{ license.name }}</h4>
               <p class="license-price">{{ formatPrice(license.price) }}</p>
-              <p class="license-description">{{ license.description }}</p>
+              <p class="license-description">{{ license.maxSales ? `Maximum ${license.maxSales} ventes` : 'Ventes illimitées' }}</p>
             </div>
           </div>
         </div>
@@ -58,33 +58,38 @@ import BaseButton from '@/components/BaseButton.vue'
 import AudioPlayer from '@/components/AudioPlayer.vue'
 import { useProductStore } from '@/stores/product'
 import { useCartStore } from '@/stores/cart'
+import type { Product, License } from '@/types'
 
 const route = useRoute()
 const productStore = useProductStore()
 const cartStore = useCartStore()
 
-const product = ref(null)
-const selectedLicense = ref(null)
+const product = ref<Product | null>(null)
+const selectedLicense = ref<License | null>(null)
 
 onMounted(async () => {
-  const productId = route.params.id
+  const productId = route.params.id as string
   product.value = await productStore.getProductById(productId)
 })
 
-const selectLicense = (license) => {
+const selectLicense = (license: License) => {
   selectedLicense.value = license
 }
 
 const addToCart = () => {
   if (product.value) {
-    cartStore.addToCart({
+    cartStore.addItem({
+      id: Math.random().toString(36).substring(2, 9),
       product: product.value,
-      license: selectedLicense.value
+      license: selectedLicense.value || undefined,
+      quantity: 1,
+      downloadUrl: product.value.audioUrl,
+      contractUrl: selectedLicense.value?.contractPath
     })
   }
 }
 
-const formatPrice = (price) => {
+const formatPrice = (price: number) => {
   return new Intl.NumberFormat('fr-FR', {
     style: 'currency',
     currency: 'EUR'

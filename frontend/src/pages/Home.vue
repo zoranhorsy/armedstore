@@ -31,9 +31,10 @@ import { ref, onMounted } from 'vue'
 import BaseButton from '@/components/BaseButton.vue'
 import ProductCard from '@/components/ProductCard.vue'
 import { useProductStore } from '@/stores/product'
+import type { Product } from '@/types'
 
 const productStore = useProductStore()
-const featuredProducts = ref([])
+const featuredProducts = ref<Product[]>([])
 
 onMounted(async () => {
   // Récupérer les produits en avant

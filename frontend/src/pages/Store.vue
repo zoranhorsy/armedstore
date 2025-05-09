@@ -44,16 +44,17 @@ import { ref, computed, onMounted } from 'vue'
 import BaseInput from '@/components/BaseInput.vue'
 import ProductCard from '@/components/ProductCard.vue'
 import { useProductStore } from '@/stores/product'
+import type { Product } from '../types'
 
 const productStore = useProductStore()
-const products = ref([])
+const products = ref<Product[]>([])
 const searchQuery = ref('')
 const selectedType = ref('')
 const selectedTag = ref('')
-const availableTags = ref([])
+const availableTags = ref<string[]>([])
 
 const filteredProducts = computed(() => {
-  return products.value.filter(product => {
+  return products.value.filter((product: Product) => {
     const matchesSearch = product.title.toLowerCase().includes(searchQuery.value.toLowerCase())
     const matchesType = !selectedType.value || product.type === selectedType.value
     const matchesTag = !selectedTag.value || product.tags.includes(selectedTag.value)
@@ -62,9 +63,9 @@ const filteredProducts = computed(() => {
 })
 
 onMounted(async () => {
-  products.value = await productStore.getAllProducts()
+  products.value = await productStore.fetchProducts()
   // Extraire les tags uniques des produits
-  availableTags.value = [...new Set(products.value.flatMap(p => p.tags))]
+  availableTags.value = [...new Set(products.value.flatMap((p: Product) => p.tags))]
 })
 
 const filterProducts = () => {

@@ -48,16 +48,19 @@ import { ref, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import BaseButton from '@/components/BaseButton.vue'
 import { useOrderStore } from '@/stores/order'
+import type { CartItem } from '../types'
 
 const route = useRoute()
 const orderStore = useOrderStore()
-const orderItems = ref([])
+const orderItems = ref<CartItem[]>([])
 
 onMounted(async () => {
-  const orderId = route.query.order
+  const orderId = route.query.order as string
   if (orderId) {
-    const order = await orderStore.getOrderById(orderId)
-    orderItems.value = order.items
+    const order = await orderStore.fetchOrder(orderId)
+    if (order) {
+      orderItems.value = order.items
+    }
   }
 })
 </script>

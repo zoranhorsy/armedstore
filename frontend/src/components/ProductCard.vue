@@ -1,40 +1,36 @@
 <template>
-  <article class="product-card">
-    <div class="product-card__image">
-      <img :src="image" :alt="title" />
-      <div class="product-card__overlay">
-        <BaseButton variant="primary" @click="$emit('play')">
+  <div class="product-card">
+    <img :src="product.imageUrl" :alt="product.title" class="product-card__image" />
+    <div class="product-card__content">
+      <h3 class="product-card__title">{{ product.title }}</h3>
+      <p class="product-card__type">{{ product.type }}</p>
+      <p class="product-card__price">{{ formatPrice(product.price) }}</p>
+      <div class="product-card__actions">
+        <BaseButton 
+          variant="text" 
+          class="product-card__play"
+          @click="$emit('play')"
+        >
           <span class="material-icons">play_arrow</span>
         </BaseButton>
-      </div>
-    </div>
-    
-    <div class="product-card__content">
-      <h3 class="product-card__title">{{ title }}</h3>
-      <p class="product-card__type">{{ type }}</p>
-      <div class="product-card__footer">
-        <span class="product-card__price">{{ formatPrice(price) }}€</span>
         <BaseButton 
-          variant="outline" 
-          :disabled="!inStock"
+          variant="primary"
           @click="$emit('add-to-cart')"
+          :disabled="!product.inStock"
         >
-          {{ inStock ? 'Ajouter au panier' : 'En rupture' }}
+          {{ product.inStock ? 'Ajouter au panier' : 'En rupture' }}
         </BaseButton>
       </div>
     </div>
-  </article>
+  </div>
 </template>
 
 <script setup lang="ts">
 import BaseButton from './BaseButton.vue'
+import type { Product } from '@/types/index'
 
 defineProps<{
-  title: string
-  type: string
-  price: number
-  image: string
-  inStock: boolean
+  product: Product
 }>()
 
 defineEmits<{
@@ -43,48 +39,30 @@ defineEmits<{
 }>()
 
 const formatPrice = (price: number) => {
-  return price.toFixed(2)
+  return new Intl.NumberFormat('fr-FR', {
+    style: 'currency',
+    currency: 'EUR'
+  }).format(price)
 }
 </script>
 
 <style scoped>
 .product-card {
   background: white;
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-md);
   overflow: hidden;
-  transition: transform var(--transition-normal);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease;
 }
 
 .product-card:hover {
-  transform: translateY(-4px);
+  transform: translateY(-2px);
 }
 
 .product-card__image {
-  position: relative;
-  aspect-ratio: 1;
-  overflow: hidden;
-}
-
-.product-card__image img {
   width: 100%;
-  height: 100%;
+  height: 200px;
   object-fit: cover;
-}
-
-.product-card__overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  transition: opacity var(--transition-normal);
-}
-
-.product-card:hover .product-card__overlay {
-  opacity: 1;
 }
 
 .product-card__content {
@@ -92,24 +70,35 @@ const formatPrice = (price: number) => {
 }
 
 .product-card__title {
-  font-size: 1.125rem;
+  font-size: 1.25rem;
+  font-weight: 600;
   margin-bottom: var(--spacing-xs);
 }
 
 .product-card__type {
-  color: rgba(0, 0, 0, 0.6);
+  color: var(--color-text-secondary);
   font-size: 0.875rem;
-  margin-bottom: var(--spacing-md);
-}
-
-.product-card__footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  margin-bottom: var(--spacing-xs);
 }
 
 .product-card__price {
+  font-size: 1.125rem;
   font-weight: 600;
-  font-size: 1.25rem;
+  color: var(--color-primary);
+  margin-bottom: var(--spacing-md);
+}
+
+.product-card__actions {
+  display: flex;
+  gap: var(--spacing-sm);
+  align-items: center;
+}
+
+.product-card__play {
+  padding: var(--spacing-xs);
+}
+
+.product-card__play .material-icons {
+  font-size: 24px;
 }
 </style> 

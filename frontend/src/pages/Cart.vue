@@ -64,6 +64,7 @@ import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 import BaseButton from '@/components/BaseButton.vue'
 import { useCartStore } from '@/stores/cart'
+import type { CartItem } from '@/types'
 
 const router = useRouter()
 const cartStore = useCartStore()
@@ -79,15 +80,15 @@ const subtotal = computed(() => {
 const tax = computed(() => subtotal.value * 0.2)
 const total = computed(() => subtotal.value + tax.value)
 
-const removeFromCart = (item) => {
-  cartStore.removeFromCart(item)
+const removeFromCart = (item: CartItem) => {
+  cartStore.removeFromCart(item.id)
 }
 
 const goToCheckout = () => {
   router.push('/checkout')
 }
 
-const formatPrice = (price) => {
+const formatPrice = (price: number) => {
   return new Intl.NumberFormat('fr-FR', {
     style: 'currency',
     currency: 'EUR'

@@ -51,7 +51,7 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
 import { useRouter } from 'vue-router'
-import { loadStripe } from '@stripe/stripe-js'
+import { loadStripe, type Stripe, type StripeElements, type StripeCardElement } from '@stripe/stripe-js'
 import BaseInput from '@/components/BaseInput.vue'
 import BaseButton from '@/components/BaseButton.vue'
 import { useCartStore } from '@/stores/cart'
@@ -62,7 +62,7 @@ const cartStore = useCartStore()
 const orderStore = useOrderStore()
 
 const email = ref('')
-const stripeElement = ref(null)
+const stripeElement = ref<HTMLElement | null>(null)
 const isProcessing = ref(false)
 
 const cartItems = computed(() => cartStore.items)
@@ -73,16 +73,22 @@ const total = computed(() => {
   return subtotal * 1.2 // TVA incluse
 })
 
-let stripe = null
-let elements = null
+let stripe: Stripe | null = null
+let elements: StripeElements | null = null
+let card: StripeCardElement | null = null
 
 onMounted(async () => {
   // Initialiser Stripe
   stripe = await loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY)
+  if (!stripe) {
+    console.error('Impossible de charger Stripe')
+    return
+  }
+  
   elements = stripe.elements()
   
   // Créer l'élément de carte
-  const card = elements.create('card', {
+  card = elements.create('card', {
     style: {
       base: {
         fontSize: '16px',
@@ -97,11 +103,13 @@ onMounted(async () => {
     },
   })
   
-  card.mount(stripeElement.value)
+  if (stripeElement.value) {
+    card.mount(stripeElement.value)
+  }
 })
 
 const handleSubmit = async () => {
-  if (isProcessing.value) return
+  if (isProcessing.value || !stripe || !elements || !card) return
   
   isProcessing.value = true
   
@@ -116,7 +124,7 @@ const handleSubmit = async () => {
     // Confirmer le paiement avec Stripe
     const { error, paymentIntent } = await stripe.confirmCardPayment(clientSecret, {
       payment_method: {
-        card: elements.getElement('card'),
+        card,
         billing_details: {
           email: email.value
         }
@@ -140,7 +148,7 @@ const handleSubmit = async () => {
   }
 }
 
-const formatPrice = (price) => {
+const formatPrice = (price: number) => {
   return new Intl.NumberFormat('fr-FR', {
     style: 'currency',
     currency: 'EUR'

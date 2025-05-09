@@ -2,7 +2,7 @@
   <div class="audio-player">
     <audio
       ref="audioRef"
-      :src="src"
+      :src="audioUrl"
       @timeupdate="onTimeUpdate"
       @loadedmetadata="onLoadedMetadata"
       @ended="onEnded"
@@ -42,11 +42,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onUnmounted } from 'vue'
 import BaseButton from './BaseButton.vue'
 
-const props = defineProps<{
-  src: string
+defineProps<{
+  audioUrl: string
 }>()
 
 const audioRef = ref<HTMLAudioElement | null>(null)
@@ -94,7 +94,7 @@ const onSeek = (event: Event) => {
 const formatTime = (time: number) => {
   const minutes = Math.floor(time / 60)
   const seconds = Math.floor(time % 60)
-  return \`\${minutes}:\${seconds.toString().padStart(2, '0')}\`
+  return `${minutes}:${seconds.toString().padStart(2, '0')}`
 }
 
 onUnmounted(() => {
